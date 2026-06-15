@@ -72,8 +72,6 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   );
 }
 
-import { VANI_TW_CONFIG, VANI_GLOBAL_CSS } from "../lib/vani-head";
-
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({
     meta: [
@@ -89,12 +87,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "stylesheet", href: appCss },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" },
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" },
-    ],
-    scripts: [
-      { src: "https://cdn.tailwindcss.com?plugins=forms,container-queries" },
-      { children: VANI_TW_CONFIG },
+      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" },
+      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" },
     ],
   }),
   shellComponent: RootShell,
@@ -108,7 +102,6 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="en" className="scroll-smooth">
       <head>
         <HeadContent />
-        <style dangerouslySetInnerHTML={{ __html: VANI_GLOBAL_CSS }} />
       </head>
       <body>
         {children}

@@ -9,20 +9,16 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as MRouteImport } from './routes/m'
+import { Route as SignupRouteImport } from './routes/signup'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as CreateAgentRouteImport } from './routes/create-agent'
-import { Route as AgentRouteImport } from './routes/agent'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as MLoginRouteImport } from './routes/m.login'
-import { Route as MDashboardRouteImport } from './routes/m.dashboard'
-import { Route as MCreateAgentRouteImport } from './routes/m.create-agent'
-import { Route as MCallRouteImport } from './routes/m.call'
+import { Route as AgentIdRouteImport } from './routes/agent.$id'
 
-const MRoute = MRouteImport.update({
-  id: '/m',
-  path: '/m',
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -40,129 +36,79 @@ const CreateAgentRoute = CreateAgentRouteImport.update({
   path: '/create-agent',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AgentRoute = AgentRouteImport.update({
-  id: '/agent',
-  path: '/agent',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const MLoginRoute = MLoginRouteImport.update({
-  id: '/login',
-  path: '/login',
-  getParentRoute: () => MRoute,
-} as any)
-const MDashboardRoute = MDashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
-  getParentRoute: () => MRoute,
-} as any)
-const MCreateAgentRoute = MCreateAgentRouteImport.update({
-  id: '/create-agent',
-  path: '/create-agent',
-  getParentRoute: () => MRoute,
-} as any)
-const MCallRoute = MCallRouteImport.update({
-  id: '/call',
-  path: '/call',
-  getParentRoute: () => MRoute,
+const AgentIdRoute = AgentIdRouteImport.update({
+  id: '/agent/$id',
+  path: '/agent/$id',
+  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/agent': typeof AgentRoute
   '/create-agent': typeof CreateAgentRoute
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
-  '/m': typeof MRouteWithChildren
-  '/m/call': typeof MCallRoute
-  '/m/create-agent': typeof MCreateAgentRoute
-  '/m/dashboard': typeof MDashboardRoute
-  '/m/login': typeof MLoginRoute
+  '/signup': typeof SignupRoute
+  '/agent/$id': typeof AgentIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/agent': typeof AgentRoute
   '/create-agent': typeof CreateAgentRoute
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
-  '/m': typeof MRouteWithChildren
-  '/m/call': typeof MCallRoute
-  '/m/create-agent': typeof MCreateAgentRoute
-  '/m/dashboard': typeof MDashboardRoute
-  '/m/login': typeof MLoginRoute
+  '/signup': typeof SignupRoute
+  '/agent/$id': typeof AgentIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/agent': typeof AgentRoute
   '/create-agent': typeof CreateAgentRoute
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
-  '/m': typeof MRouteWithChildren
-  '/m/call': typeof MCallRoute
-  '/m/create-agent': typeof MCreateAgentRoute
-  '/m/dashboard': typeof MDashboardRoute
-  '/m/login': typeof MLoginRoute
+  '/signup': typeof SignupRoute
+  '/agent/$id': typeof AgentIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/agent'
     | '/create-agent'
     | '/dashboard'
     | '/login'
-    | '/m'
-    | '/m/call'
-    | '/m/create-agent'
-    | '/m/dashboard'
-    | '/m/login'
+    | '/signup'
+    | '/agent/$id'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/agent'
-    | '/create-agent'
-    | '/dashboard'
-    | '/login'
-    | '/m'
-    | '/m/call'
-    | '/m/create-agent'
-    | '/m/dashboard'
-    | '/m/login'
+  to: '/' | '/create-agent' | '/dashboard' | '/login' | '/signup' | '/agent/$id'
   id:
     | '__root__'
     | '/'
-    | '/agent'
     | '/create-agent'
     | '/dashboard'
     | '/login'
-    | '/m'
-    | '/m/call'
-    | '/m/create-agent'
-    | '/m/dashboard'
-    | '/m/login'
+    | '/signup'
+    | '/agent/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AgentRoute: typeof AgentRoute
   CreateAgentRoute: typeof CreateAgentRoute
   DashboardRoute: typeof DashboardRoute
   LoginRoute: typeof LoginRoute
-  MRoute: typeof MRouteWithChildren
+  SignupRoute: typeof SignupRoute
+  AgentIdRoute: typeof AgentIdRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/m': {
-      id: '/m'
-      path: '/m'
-      fullPath: '/m'
-      preLoaderRoute: typeof MRouteImport
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -186,13 +132,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CreateAgentRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/agent': {
-      id: '/agent'
-      path: '/agent'
-      fullPath: '/agent'
-      preLoaderRoute: typeof AgentRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -200,71 +139,24 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/m/login': {
-      id: '/m/login'
-      path: '/login'
-      fullPath: '/m/login'
-      preLoaderRoute: typeof MLoginRouteImport
-      parentRoute: typeof MRoute
-    }
-    '/m/dashboard': {
-      id: '/m/dashboard'
-      path: '/dashboard'
-      fullPath: '/m/dashboard'
-      preLoaderRoute: typeof MDashboardRouteImport
-      parentRoute: typeof MRoute
-    }
-    '/m/create-agent': {
-      id: '/m/create-agent'
-      path: '/create-agent'
-      fullPath: '/m/create-agent'
-      preLoaderRoute: typeof MCreateAgentRouteImport
-      parentRoute: typeof MRoute
-    }
-    '/m/call': {
-      id: '/m/call'
-      path: '/call'
-      fullPath: '/m/call'
-      preLoaderRoute: typeof MCallRouteImport
-      parentRoute: typeof MRoute
+    '/agent/$id': {
+      id: '/agent/$id'
+      path: '/agent/$id'
+      fullPath: '/agent/$id'
+      preLoaderRoute: typeof AgentIdRouteImport
+      parentRoute: typeof rootRouteImport
     }
   }
 }
 
-interface MRouteChildren {
-  MCallRoute: typeof MCallRoute
-  MCreateAgentRoute: typeof MCreateAgentRoute
-  MDashboardRoute: typeof MDashboardRoute
-  MLoginRoute: typeof MLoginRoute
-}
-
-const MRouteChildren: MRouteChildren = {
-  MCallRoute: MCallRoute,
-  MCreateAgentRoute: MCreateAgentRoute,
-  MDashboardRoute: MDashboardRoute,
-  MLoginRoute: MLoginRoute,
-}
-
-const MRouteWithChildren = MRoute._addFileChildren(MRouteChildren)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AgentRoute: AgentRoute,
   CreateAgentRoute: CreateAgentRoute,
   DashboardRoute: DashboardRoute,
   LoginRoute: LoginRoute,
-  MRoute: MRouteWithChildren,
+  SignupRoute: SignupRoute,
+  AgentIdRoute: AgentIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

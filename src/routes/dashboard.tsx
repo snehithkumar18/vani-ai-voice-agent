@@ -1,7 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { HtmlPage } from "@/components/HtmlPage";
-import html from "@/page-html/vani_ai_dashboard.body.html?raw";
+import { DashboardLayout } from "../components/layout/DashboardLayout";
 
 export const Route = createFileRoute("/dashboard")({
-  component: () => <HtmlPage html={html} className="bg-surface text-on-surface" />,
+  component: DashboardPage,
 });
+
+function DashboardPage() {
+  return (
+    <DashboardLayout>
+      <div className="flex items-center justify-center h-full">
+        <h1 className="text-2xl text-primary">Dashboard</h1>
+      </div>
+    </DashboardLayout>
+  );
+}
