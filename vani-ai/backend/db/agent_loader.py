@@ -138,7 +138,8 @@ async def load_agent_config(agent_id: str) -> AgentConfig:
     if not agent_db:
         raise ValueError(f"Agent not found: {agent_id}")
 
-    logger.info(f"Loaded agent: {agent_db.get('business_name')} (ID: {agent_id})")
+    business_name = agent_db.get("name", "Vani Agent")
+    logger.info(f"Loaded agent: {business_name} (ID: {agent_id})")
 
     # --- 2. Load knowledge base entries ---
     kb_resp = (
@@ -158,9 +159,9 @@ async def load_agent_config(agent_id: str) -> AgentConfig:
     # --- 3. Load phone number ---
     phone_resp = (
         sb.table("phone_numbers")
-        .select("phone_number, sip_trunk_id")
+        .select("number")
         .eq("agent_id", agent_id)
-        .eq("is_active", True)
+        .eq("status", "active")
         .limit(1)
         .execute()
     )
@@ -179,13 +180,14 @@ async def load_agent_config(agent_id: str) -> AgentConfig:
     # --- 6. Construct initial greeting ---
     initial_greeting = agent_db.get(
         "initial_greeting",
-        f"Greet the caller warmly on behalf of {agent_db.get('business_name', 'our company')}. Introduce yourself and ask how you can help."
+        f"Greet the caller warmly on behalf of {business_name}. Introduce yourself and ask how you can help."
     )
 
+    import os
     return AgentConfig(
         agent_id=agent_id,
         user_id=agent_db.get("user_id", ""),
-        name=agent_db.get("business_name", "Vani Agent"),
+        name=business_name,
         business_type=agent_db.get("business_type", "business"),
         language=language,
         language_code=language_code,
@@ -194,7 +196,7 @@ async def load_agent_config(agent_id: str) -> AgentConfig:
         system_prompt=system_prompt,
         initial_greeting=initial_greeting,
         knowledge_base=kb_text,
-        phone_number=phone_data.get("phone_number"),
-        sip_trunk_id=phone_data.get("sip_trunk_id"),
-        transfer_number=agent_db.get("transfer_number"),
+        phone_number=phone_data.get("number") or agent_db.get("phone_number"),
+        sip_trunk_id=os.getenv("VOBIZ_SIP_TRUNK_ID"),
+        transfer_number=os.getenv("DEFAULT_TRANSFER_NUMBER"),
     )

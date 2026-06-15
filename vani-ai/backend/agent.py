@@ -89,10 +89,11 @@ def _build_llm(config_provider: str = None):
 
 
 class TransferFunctions(llm.ToolContext):
-    def __init__(self, ctx: agents.JobContext, phone_number: str = None):
+    def __init__(self, ctx: agents.JobContext, phone_number: str = None, default_transfer_number: str = None):
         super().__init__(tools=[])
         self.ctx = ctx
         self.phone_number = phone_number
+        self.default_transfer_number = default_transfer_number
 
     @llm.function_tool(description="Look up user details by phone number.")
     def lookup_user(self, phone: str):
@@ -111,7 +112,7 @@ class TransferFunctions(llm.ToolContext):
         Transfer the call.
         """
         if destination is None:
-            destination = config.DEFAULT_TRANSFER_NUMBER
+            destination = self.default_transfer_number or config.DEFAULT_TRANSFER_NUMBER
             if not destination:
                  return "Error: No default transfer number configured."
         if "@" not in destination:
@@ -168,13 +169,11 @@ class OutboundAssistant(Agent):
     An AI agent tailored for outbound calls.
     Attempts to be helpful and concise.
     """
-    def __init__(self, tools: list) -> None:
+    def __init__(self, tools: list, instructions: str = None) -> None:
         super().__init__(
-            instructions=config.SYSTEM_PROMPT,
+            instructions=instructions or config.SYSTEM_PROMPT,
             tools=tools,
         )
-
-
 
 
 async def entrypoint(ctx: agents.JobContext):
@@ -182,10 +181,9 @@ async def entrypoint(ctx: agents.JobContext):
     Main entrypoint for the agent.
     
     For outbound calls:
-    1. Checks for 'phone_number' in the job metadata.
-    2. Connects to the room.
-    3. Initiates the SIP call to the phone number.
-    4. Waits for answer before speaking.
+    1. Checks for 'phone_number' and 'agent_id' in metadata.
+    2. Connects to the room and dynamically resolves config from DB.
+    3. Initiates call or listens.
     """
     logger.info(f"Connecting to room: {ctx.room.name}")
     
@@ -212,21 +210,77 @@ async def entrypoint(ctx: agents.JobContext):
     except Exception:
         logger.warning("No valid JSON metadata found in Room.")
 
+    # Load agent configuration dynamically if agent_id is provided
+    agent_id = config_dict.get("agent_id")
+    user_id = config_dict.get("user_id", "")
+    agent_config = None
+    if agent_id:
+        try:
+            from db.agent_loader import load_agent_config
+            agent_config = await load_agent_config(agent_id)
+            user_id = agent_config.user_id or user_id
+        except Exception as e:
+            logger.error(f"Failed to load agent config for agent {agent_id}: {e}")
+
+    # Set up STT language and provider
+    stt_language = agent_config.language_code if agent_config else config.STT_LANGUAGE
+    
+    # Set up LLM provider: prioritize Groq if agent config exists, otherwise default
+    llm_provider = config_dict.get("model_provider", "groq" if agent_config else config.DEFAULT_LLM_PROVIDER)
+    
+    # Set up TTS voice name: use Sarvam speaker from DB or fallback
+    voice_name = agent_config.sarvam_speaker if (agent_config and agent_config.language != "English") else config_dict.get("voice_id")
+
     # Initialize function context
-    fnc_ctx = TransferFunctions(ctx, phone_number)
+    transfer_num = agent_config.transfer_number if agent_config else None
+    fnc_ctx = TransferFunctions(ctx, phone_number, default_transfer_number=transfer_num)
 
     # Initialize the Agent Session with plugins
     session = AgentSession(
         vad=silero.VAD.load(),
-        stt=deepgram.STT(model=config.STT_MODEL, language=config.STT_LANGUAGE), 
-        llm=_build_llm(config_dict.get("model_provider")),
-        tts=_build_tts(config_dict.get("model_provider"), config_dict.get("voice_id")),
+        stt=deepgram.STT(model=config.STT_MODEL, language=stt_language), 
+        llm=_build_llm(llm_provider),
+        tts=_build_tts(llm_provider, voice_name),
     )
 
+    # Initialize call logger if database parameters are available
+    call_logger = None
+    if phone_number and agent_id:
+        try:
+            from db.call_logger import CallLogger
+            call_logger = CallLogger(agent_id=agent_id, user_id=user_id, caller_number=phone_number)
+            await call_logger.start_call()
+        except Exception as e:
+            logger.error(f"Failed to initialize call logger: {e}")
+
+    # Register logger events
+    if call_logger:
+        @session.on("user_input_transcribed")
+        def on_user_input_transcribed(event):
+            if event.is_final and event.transcript:
+                call_logger.add_transcript("User", event.transcript)
+
+        @session.on("agent_speech_committed")
+        def on_agent_speech_committed(msg):
+            text = msg.content if hasattr(msg, "content") else (msg.text if hasattr(msg, "text") else str(msg))
+            if text:
+                call_logger.add_transcript("Agent", text)
+
+        # Register shutdown hook to end the call logger entry
+        async def on_shutdown():
+            logger.info("Outbound agent shutting down. Saving call logger data.")
+            try:
+                await call_logger.end_call(status="completed")
+            except Exception as e:
+                logger.error(f"Failed to end call log: {e}")
+        
+        ctx.add_shutdown_callback(on_shutdown)
+
     # Start the session
+    instructions = agent_config.system_prompt if agent_config else config.SYSTEM_PROMPT
     await session.start(
         room=ctx.room,
-        agent=OutboundAssistant(tools=list(fnc_ctx.function_tools.values())),
+        agent=OutboundAssistant(tools=list(fnc_ctx.function_tools.values()), instructions=instructions),
         room_input_options=RoomInputOptions(
             noise_cancellation=noise_cancellation.BVCTelephony(),
             close_on_disconnect=True, # Close room when agent disconnects
@@ -252,18 +306,19 @@ async def entrypoint(ctx: agents.JobContext):
         else:
             logger.info("User already in room (Dashboard dispatched). output Only generated greeting.")
 
+    initial_greeting = agent_config.initial_greeting if agent_config else config.INITIAL_GREETING
+    fallback_greeting = agent_config.initial_greeting if agent_config else config.fallback_greeting
+
     if should_dial:
         logger.info(f"Initiating outbound SIP call to {phone_number}...")
         try:
             # Create a SIP participant to dial out
-            # This effectively "calls" the phone number and brings them into this room
-            # --- CONNECTING TO THE PHONE NETWORK ---
-            # This step actually "dials" the number using Vobiz (SIP Trunk).
-            # It invites the phone number into this digital room.
+            # Determine trunk ID
+            sip_trunk_id = (agent_config.sip_trunk_id if agent_config else None) or config.SIP_TRUNK_ID
             await ctx.api.sip.create_sip_participant(
                 api.CreateSIPParticipantRequest(
                     room_name=ctx.room.name,
-                    sip_trunk_id=config.SIP_TRUNK_ID,
+                    sip_trunk_id=sip_trunk_id,
                     sip_call_to=phone_number,
                     participant_identity=f"sip_{phone_number}", # Unique ID for the SIP user
                     wait_until_answered=True, # Important: Wait for pickup before continuing
@@ -271,24 +326,24 @@ async def entrypoint(ctx: agents.JobContext):
             )
             logger.info("Call answered! Agent is now listening.")
             
-            # Note: We do NOT generate an initial reply here immediately.
-            # Usually for outbound, we want to hear "Hello?" from the user first,
-            # OR we can speak immediately. 
-            # If you want the agent to speak first, uncomment the lines below:
-            
             await session.generate_reply(
-                instructions=config.INITIAL_GREETING
+                instructions=initial_greeting
             )
             
         except Exception as e:
             logger.error(f"Failed to place outbound call: {e}")
+            if call_logger:
+                try:
+                    await call_logger.end_call(status="failed")
+                except Exception as log_err:
+                    logger.error(f"Failed to update call logger on dial failure: {log_err}")
             # Ensure we clean up if the call fails
             ctx.shutdown()
     else:
         # Fallback for inbound calls (if this agent is used for that) OR Dashboard calls where user is already there
         logger.info("Detecting if we should greet...")
         # Give a small delay for audio to stabilize if user just joined
-        await session.generate_reply(instructions=config.fallback_greeting)
+        await session.generate_reply(instructions=fallback_greeting)
 
 
 if __name__ == "__main__":

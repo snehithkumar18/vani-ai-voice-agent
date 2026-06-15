@@ -41,7 +41,7 @@ class CallLogger:
                     "agent_id": self.agent_id,
                     "user_id": self.user_id,
                     "caller_number": self.caller_number,
-                    "status": "in_progress",
+                    "status": "active",
                     "started_at": self.started_at.isoformat(),
                 }
             )
