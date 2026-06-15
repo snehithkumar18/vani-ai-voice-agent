@@ -14,10 +14,272 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      agents: {
+        Row: {
+          avg_duration_seconds: number | null
+          business_type: string
+          calls_handled: number | null
+          created_at: string | null
+          description: string | null
+          id: string
+          language: string
+          name: string
+          phone_number: string | null
+          status: string | null
+          success_rate: number | null
+          updated_at: string | null
+          user_id: string
+          voice_type: string | null
+        }
+        Insert: {
+          avg_duration_seconds?: number | null
+          business_type: string
+          calls_handled?: number | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          language?: string
+          name: string
+          phone_number?: string | null
+          status?: string | null
+          success_rate?: number | null
+          updated_at?: string | null
+          user_id: string
+          voice_type?: string | null
+        }
+        Update: {
+          avg_duration_seconds?: number | null
+          business_type?: string
+          calls_handled?: number | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          language?: string
+          name?: string
+          phone_number?: string | null
+          status?: string | null
+          success_rate?: number | null
+          updated_at?: string | null
+          user_id?: string
+          voice_type?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agents_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "dashboard_stats"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      calls: {
+        Row: {
+          agent_id: string | null
+          caller_name: string | null
+          caller_number: string | null
+          duration_seconds: number | null
+          ended_at: string | null
+          id: string
+          intent: string | null
+          recording_url: string | null
+          sentiment: string | null
+          started_at: string | null
+          status: string | null
+          transcript: string | null
+          user_id: string
+        }
+        Insert: {
+          agent_id?: string | null
+          caller_name?: string | null
+          caller_number?: string | null
+          duration_seconds?: number | null
+          ended_at?: string | null
+          id?: string
+          intent?: string | null
+          recording_url?: string | null
+          sentiment?: string | null
+          started_at?: string | null
+          status?: string | null
+          transcript?: string | null
+          user_id: string
+        }
+        Update: {
+          agent_id?: string | null
+          caller_name?: string | null
+          caller_number?: string | null
+          duration_seconds?: number | null
+          ended_at?: string | null
+          id?: string
+          intent?: string | null
+          recording_url?: string | null
+          sentiment?: string | null
+          started_at?: string | null
+          status?: string | null
+          transcript?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "calls_agent_id_fkey"
+            columns: ["agent_id"]
+            isOneToOne: false
+            referencedRelation: "agents"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "calls_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "dashboard_stats"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      knowledge_base: {
+        Row: {
+          agent_id: string
+          content: string
+          created_at: string | null
+          id: string
+          title: string | null
+          user_id: string
+        }
+        Insert: {
+          agent_id: string
+          content: string
+          created_at?: string | null
+          id?: string
+          title?: string | null
+          user_id: string
+        }
+        Update: {
+          agent_id?: string
+          content?: string
+          created_at?: string | null
+          id?: string
+          title?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "knowledge_base_agent_id_fkey"
+            columns: ["agent_id"]
+            isOneToOne: false
+            referencedRelation: "agents"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "knowledge_base_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "dashboard_stats"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      phone_numbers: {
+        Row: {
+          agent_id: string | null
+          country_code: string | null
+          created_at: string | null
+          id: string
+          number: string
+          provider: string | null
+          provider_number_id: string | null
+          status: string | null
+          user_id: string
+        }
+        Insert: {
+          agent_id?: string | null
+          country_code?: string | null
+          created_at?: string | null
+          id?: string
+          number: string
+          provider?: string | null
+          provider_number_id?: string | null
+          status?: string | null
+          user_id: string
+        }
+        Update: {
+          agent_id?: string | null
+          country_code?: string | null
+          created_at?: string | null
+          id?: string
+          number?: string
+          provider?: string | null
+          provider_number_id?: string | null
+          status?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "phone_numbers_agent_id_fkey"
+            columns: ["agent_id"]
+            isOneToOne: false
+            referencedRelation: "agents"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "phone_numbers_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "dashboard_stats"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          calls_limit: number | null
+          calls_used_today: number | null
+          company_name: string | null
+          created_at: string | null
+          full_name: string | null
+          id: string
+          plan: string | null
+        }
+        Insert: {
+          calls_limit?: number | null
+          calls_used_today?: number | null
+          company_name?: string | null
+          created_at?: string | null
+          full_name?: string | null
+          id: string
+          plan?: string | null
+        }
+        Update: {
+          calls_limit?: number | null
+          calls_used_today?: number | null
+          company_name?: string | null
+          created_at?: string | null
+          full_name?: string | null
+          id?: string
+          plan?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "profiles_id_fkey"
+            columns: ["id"]
+            isOneToOne: true
+            referencedRelation: "dashboard_stats"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
     }
     Views: {
-      [_ in never]: never
+      dashboard_stats: {
+        Row: {
+          active_agents: number | null
+          avg_duration_seconds: number | null
+          satisfaction_score: number | null
+          total_agents: number | null
+          total_calls: number | null
+          user_id: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       [_ in never]: never
