@@ -1,0 +1,173 @@
+<!-- Top Navigation Bar -->
+<nav class="fixed top-0 w-full z-50 flex justify-between items-center px-lg h-16 bg-surface-white border-b border-subtle">
+<div class="flex items-center gap-sm">
+<img alt="Vani AI Logo" class="h-8 w-8 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAbafkm-Yi31X81W4jxwEvLp6OvkQE6g3ZSzdgYqVSotsAbvuWGq-x3lTuFJ2hrAZ4fYfhGj6ScX_qwJlgTThi1eTbVPePNuVDiVtCci1me7DvjsoAtLxj292T0GDYasLv9IkHwe1eq196YepOpvdHX9M6eFJLvnJnd6YwvE2QY07fMns4QQob-vTRFh_EAZUqXXcBjpLHLHm0TMZUwEHyMVM-ZotYnnTls2KCS8AyDwupxoOgg1LDxH6BiZ9O4bPfgf04QRdksRKwe"/>
+<span class="font-headline-md text-headline-md font-bold text-primary">Vani AI</span>
+</div>
+<button aria-label="Menu" class="p-2 text-on-surface-variant" onclick="toggleMenu()">
+<span class="material-symbols-outlined text-3xl">menu</span>
+</button>
+</nav>
+<!-- Mobile Menu Overlay (Hidden by default) -->
+<div class="fixed inset-0 bg-primary z-[60] flex flex-col p-lg translate-x-full transition-transform duration-300" id="mobile-menu">
+<div class="flex justify-between items-center mb-xl">
+<span class="font-headline-md text-headline-md font-bold text-on-primary">Vani AI</span>
+<button class="text-on-primary" onclick="toggleMenu()">
+<span class="material-symbols-outlined text-3xl">close</span>
+</button>
+</div>
+<div class="flex flex-col gap-lg">
+<a class="font-headline-md text-headline-md text-on-primary" href="#">Product</a>
+<a class="font-headline-md text-headline-md text-on-primary" href="#">Solutions</a>
+<a class="font-headline-md text-headline-md text-on-primary" href="#">Pricing</a>
+<a class="font-headline-md text-headline-md text-on-primary" href="#">Resources</a>
+</div>
+<div class="mt-auto flex flex-col gap-md">
+<button class="w-full py-md bg-secondary text-on-secondary rounded-lg font-bold">Get Started</button>
+<button class="w-full py-md border border-on-primary text-on-primary rounded-lg font-bold">Login</button>
+</div>
+</div>
+<main class="pt-16">
+<!-- Hero Section -->
+<section class="bg-primary text-on-primary px-lg pt-xl pb-24 overflow-hidden relative">
+<div class="relative z-10">
+<div class="inline-flex items-center gap-xs px-3 py-1 bg-secondary-container bg-opacity-20 rounded-full mb-md">
+<span class="w-2 h-2 rounded-full bg-secondary-container animate-pulse"></span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary-fixed">Voice Intelligence</span>
+</div>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile mb-md leading-tight">
+                    Give your business a <span class="text-gradient">voice</span>
+</h1>
+<p class="font-body-md text-body-md text-on-primary-container mb-xl max-w-sm">
+                    Automate enterprise communications with AI voice agents that sound human, handle complex logic, and scale with your growth.
+                </p>
+<button class="w-full py-lg bg-secondary hover:bg-opacity-90 active:scale-95 transition-all text-on-secondary rounded-xl font-bold text-body-lg shadow-lg shadow-secondary/20">
+                    Start Free Trial
+                </button>
+</div>
+<!-- Dashboard Mockup Image -->
+<div class="mt-xl relative -mx-lg">
+<div class="px-lg">
+<img alt="Vani AI Analytics Dashboard" class="w-full rounded-2xl shadow-2xl border border-white/10" data-alt="A sophisticated dark-themed enterprise dashboard UI for a voice AI platform. The interface features vibrant violet and indigo data visualizations including fluctuating waveforms, circular progress rings, and sleek line charts. The layout is clean and high-fidelity, conveying technical luxury and professional software design for high-end business applications." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDL5OonA2B9mnFY1Jp8zhan7yiPTUbiczQ7GLTZnL5KsHbl7rVb-zDoVQNOgt-RHvstWCbUI5E40Qm0yGLcoRe3F1LjnVX4GCt1CmiSH8z0Wk6BV6nxhByenCYwgHhrAQap4CAzFKvPlbw_2ZSuQf1Kkb4OgnZP-k_rHTjd3RaYheccX0FLT9LbyhufU94oDWzv5tvJuau5-gYzil3imO321ruuo6uPSTsNzhwez2hy5L4tfUpiWZXhuLXdQ_mk8-vzTQFydIzrnENd"/>
+</div>
+<!-- Atmospheric background glow -->
+<div class="absolute -bottom-20 left-1/2 -translate-x-1/2 w-full h-64 bg-secondary blur-[120px] opacity-20 pointer-events-none"></div>
+</div>
+</section>
+<!-- Features Section -->
+<section class="px-lg -mt-12 relative z-20 pb-xl">
+<div class="flex flex-col gap-md">
+<!-- Feature Card 1 -->
+<div class="bg-surface-white p-lg rounded-2xl border border-subtle shadow-sm flex items-start gap-md">
+<div class="w-12 h-12 bg-surface-container-low rounded-xl flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-secondary text-3xl">record_voice_over</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-primary mb-1">Realistic Hindi Voice</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Proprietary neural models trained specifically for Indian regional accents and nuances.</p>
+</div>
+</div>
+<!-- Feature Card 2 -->
+<div class="bg-surface-white p-lg rounded-2xl border border-subtle shadow-sm flex items-start gap-md">
+<div class="w-12 h-12 bg-surface-container-low rounded-xl flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-secondary text-3xl">call</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-primary mb-1">50+ Calls/Day</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">High-concurrency infrastructure built to handle massive enterprise call volumes without latency.</p>
+</div>
+</div>
+<!-- Feature Card 3 -->
+<div class="bg-surface-white p-lg rounded-2xl border border-subtle shadow-sm flex items-start gap-md">
+<div class="w-12 h-12 bg-surface-container-low rounded-xl flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-secondary text-3xl">language</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-primary mb-1">All Languages</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Support for 22+ official Indian languages with seamless code-switching capabilities.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Stats Section (Social Proof) -->
+<section class="px-lg py-xl bg-surface-container-low border-y border-subtle text-center">
+<h2 class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant mb-xl">Trusted by India's Largest Enterprises</h2>
+<div class="grid grid-cols-2 gap-xl opacity-60 grayscale">
+<div class="flex justify-center items-center">
+<span class="font-headline-md text-headline-md font-bold text-primary">RELIANCE</span>
+</div>
+<div class="flex justify-center items-center">
+<span class="font-headline-md text-headline-md font-bold text-primary">HDFC BANK</span>
+</div>
+<div class="flex justify-center items-center">
+<span class="font-headline-md text-headline-md font-bold text-primary">SWIGGY</span>
+</div>
+<div class="flex justify-center items-center">
+<span class="font-headline-md text-headline-md font-bold text-primary">ZEPTO</span>
+</div>
+</div>
+</section>
+<!-- CTA Section -->
+<section class="px-lg py-xl bg-primary text-on-primary">
+<div class="bg-secondary-container bg-opacity-10 p-xl rounded-3xl border border-white/5 text-center">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile mb-md">Ready to scale your voice?</h2>
+<p class="font-body-md text-body-md text-on-primary-container mb-lg">Join 500+ enterprises using Vani AI to transform customer engagement.</p>
+<button class="w-full py-md bg-surface-white text-primary rounded-lg font-bold active:scale-95 transition-transform">Get Early Access</button>
+<p class="mt-md font-label-sm text-label-sm text-on-primary-container">No credit card required.</p>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-xl px-lg flex flex-col gap-md bg-surface-white border-t border-subtle">
+<div class="flex flex-col gap-md">
+<div class="flex items-center gap-xs">
+<img alt="Vani AI Logo" class="h-6 w-6" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAbafkm-Yi31X81W4jxwEvLp6OvkQE6g3ZSzdgYqVSotsAbvuWGq-x3lTuFJ2hrAZ4fYfhGj6ScX_qwJlgTThi1eTbVPePNuVDiVtCci1me7DvjsoAtLxj292T0GDYasLv9IkHwe1eq196YepOpvdHX9M6eFJLvnJnd6YwvE2QY07fMns4QQob-vTRFh_EAZUqXXcBjpLHLHm0TMZUwEHyMVM-ZotYnnTls2KCS8AyDwupxoOgg1LDxH6BiZ9O4bPfgf04QRdksRKwe"/>
+<span class="font-headline-md text-headline-md font-bold text-primary">Vani AI</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant max-w-xs">
+                Empowering Indian enterprises with world-class voice intelligence and automated communication.
+            </p>
+</div>
+<div class="grid grid-cols-2 gap-lg mt-md">
+<div class="flex flex-col gap-sm">
+<span class="font-label-md text-label-md font-bold text-primary">Company</span>
+<a class="text-body-sm text-on-surface-variant" href="#">Privacy Policy</a>
+<a class="text-body-sm text-on-surface-variant" href="#">Terms of Service</a>
+<a class="text-body-sm text-on-surface-variant" href="#">Careers</a>
+</div>
+<div class="flex flex-col gap-sm">
+<span class="font-label-md text-label-md font-bold text-primary">Support</span>
+<a class="text-body-sm text-on-surface-variant" href="#">Contact Support</a>
+<a class="text-body-sm text-on-surface-variant" href="#">Help Center</a>
+<a class="text-body-sm text-on-surface-variant" href="#">API Docs</a>
+</div>
+</div>
+<div class="mt-xl pt-lg border-t border-subtle text-center">
+<p class="font-body-sm text-body-sm text-text-muted">
+                © 2024 Vani AI. All rights reserved. Built for Indian Enterprises.
+            </p>
+</div>
+</footer>
+<script>
+        function toggleMenu() {
+            const menu = document.getElementById('mobile-menu');
+            if (menu.classList.contains('translate-x-full')) {
+                menu.classList.remove('translate-x-full');
+                document.body.style.overflow = 'hidden';
+            } else {
+                menu.classList.add('translate-x-full');
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // Interaction for feature cards
+        const cards = document.querySelectorAll('.bg-surface-white');
+        cards.forEach(card => {
+            card.addEventListener('touchstart', () => {
+                card.classList.add('scale-98', 'opacity-90');
+            });
+            card.addEventListener('touchend', () => {
+                card.classList.remove('scale-98', 'opacity-90');
+            });
+        });
+    </script>
