@@ -6,6 +6,7 @@ import { Button } from "@/components/vani-ui/Button";
 import { Badge } from "@/components/vani-ui/Badge";
 import { useAgent, useCalls, useUpdateAgent } from "@/lib/queries";
 import type { Call } from "@/lib/database.types";
+import { triggerOutboundCall } from "@/lib/api";
 
 export const Route = createFileRoute("/_authenticated/agent/$id")({
   component: AgentDetailPage,
@@ -51,6 +52,24 @@ function AgentDetailPage() {
   const [page, setPage] = useState(1);
   const [hoverBar, setHoverBar] = useState<number | null>(null);
   const PAGE_SIZE = 10;
+
+  const [isCalling, setIsCalling] = useState(false);
+
+  const handleCall = async () => {
+    if (!agent) return;
+    const num = prompt("Enter phone number to call (with country code, e.g. +91...):", agent.phone_number || "");
+    if (!num) return;
+    
+    setIsCalling(true);
+    try {
+      const res = await triggerOutboundCall(agent.id, num, agent.user_id);
+      alert(`Call initiated successfully!\nRoom: ${res.room_name}`);
+    } catch (err: any) {
+      alert(`Failed to trigger outbound call: ${err.message || err}`);
+    } finally {
+      setIsCalling(false);
+    }
+  };
 
   const filteredCalls = useMemo(() => {
     if (!search) return calls;
@@ -125,6 +144,15 @@ function AgentDetailPage() {
             </p>
           </div>
           <div className="flex gap-3">
+            <Button
+              variant="outline"
+              onClick={handleCall}
+              disabled={isCalling}
+              iconLeft={<Icon name="call" className="text-[18px]" />}
+              className="border-emerald-200 text-emerald-700 hover:bg-emerald-50 hover:text-emerald-800"
+            >
+              {isCalling ? "Calling..." : "Call"}
+            </Button>
             <Button
               variant="outline"
               onClick={toggleStatus}
