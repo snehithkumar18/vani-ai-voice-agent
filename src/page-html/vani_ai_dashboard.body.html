@@ -1,0 +1,291 @@
+<!-- SideNavBar (Execution from JSON) -->
+<aside class="fixed left-0 top-0 h-full w-64 flex flex-col p-md z-40 bg-surface-container-low border-r border-subtle">
+<!-- Brand Header -->
+<div class="flex items-center gap-sm mb-xl px-sm">
+<div class="w-10 h-10 rounded-lg bg-secondary flex items-center justify-center text-white shadow-lg">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">graphic_eq</span>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md font-bold text-primary">Vani AI</h1>
+<p class="text-label-sm text-text-muted">Voice Intelligence</p>
+</div>
+</div>
+<!-- Navigation Tabs -->
+<nav class="flex-1 space-y-1">
+<!-- Active Tab: Overview -->
+<a class="flex items-center gap-md px-md py-sm bg-secondary-container text-on-secondary-container rounded-lg transition-transform active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md">Overview</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined">smart_toy</span>
+<span class="font-label-md text-label-md">My Agents</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined">call</span>
+<span class="font-label-md text-label-md">Call Logs</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-label-md text-label-md">Analytics</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+</nav>
+<!-- CTA Agent -->
+<div class="mt-auto mb-lg">
+<button class="w-full py-sm bg-secondary text-white rounded-lg font-label-md flex items-center justify-center gap-xs hover:bg-opacity-90 transition-all shadow-md active:scale-95">
+<span class="material-symbols-outlined text-[20px]">add</span>
+<span>Create Agent</span>
+</button>
+</div>
+<!-- Footer Tabs -->
+<div class="border-t border-subtle pt-md space-y-1">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-label-md text-label-md">Help Center</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high transition-colors rounded-lg" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-label-md text-label-md">Logout</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-64 min-h-screen bg-surface">
+<!-- Top Bar -->
+<header class="h-16 border-b border-subtle flex items-center justify-between px-xl bg-surface-white sticky top-0 z-30">
+<div class="flex items-center gap-lg flex-1">
+<div class="relative w-full max-w-md">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full pl-10 pr-md py-2 bg-surface-container-low border border-subtle rounded-lg font-body-sm focus:outline-none focus:ring-2 focus:ring-secondary/20 focus:border-secondary transition-all" placeholder="Search analytics, logs, or agents..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<button class="w-10 h-10 flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high rounded-full transition-colors relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full border-2 border-white"></span>
+</button>
+<div class="h-8 w-px bg-subtle mx-1"></div>
+<div class="flex items-center gap-sm group cursor-pointer">
+<div class="text-right">
+<p class="font-label-md text-label-md text-primary leading-none">Arjun Mehta</p>
+<p class="text-label-sm text-text-muted leading-none mt-1">Enterprise Admin</p>
+</div>
+<img alt="User Profile Avatar" class="w-10 h-10 rounded-full border-2 border-surface-container-high object-cover" data-alt="A professional headshot of a middle-aged Indian enterprise executive in a modern office setting. He is wearing a crisp navy blue shirt, exuding a sense of confidence and authority. The lighting is bright and professional, characteristic of a high-end corporate environment, with a soft-focus office interior in the background. The visual style is clean, modern, and aligned with a premium SaaS brand aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAmtafHi52l1FmL2wyCNpxJzJKWC2gXrkZaQpbptGQE-8pRQwN5I_j0Ob0lX3gU5I9jWk66gbNtPn8M9WyRwbE1ISw7USTaXETNQ257uKFnP_NqEgzzNt14re7P6pL0FUYLaeErBsSLSSnOBKIjKGSAgUoGG8WL1NGcprl7180-IFlKau6jhsqPrdMzPlJPQUemEC3Ej-Nh5L3Ik53cSqyIDyWyy3rm_rb0vh-9voWBtKgXQGuaLvIe2B1SVnsl2C1vc2Hk5iWU4F03"/>
+</div>
+</div>
+</header>
+<!-- Dashboard Content -->
+<div class="p-xl space-y-xl max-w-container-max mx-auto">
+<!-- Page Header -->
+<div class="flex items-center justify-between">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-primary">Overview</h2>
+<p class="font-body-md text-body-md text-text-muted">Real-time performance metrics for your voice agents.</p>
+</div>
+<button class="px-lg py-3 bg-secondary text-white rounded-xl font-headline-md text-[16px] flex items-center gap-sm hover:shadow-xl hover:scale-[1.02] active:scale-95 transition-all">
+<span class="material-symbols-outlined">add</span>
+                    Create New Agent
+                </button>
+</div>
+<!-- Stat Cards -->
+<section class="stats-grid">
+<!-- Total Calls -->
+<div class="bg-surface-white border border-subtle p-lg rounded-xl flex flex-col justify-between hover:border-secondary/30 transition-colors cursor-default">
+<div class="flex justify-between items-start">
+<div class="p-2 bg-primary/5 rounded-lg">
+<span class="material-symbols-outlined text-primary">call</span>
+</div>
+<span class="text-success-emerald text-label-sm flex items-center gap-1 font-bold">
+<span class="material-symbols-outlined text-sm">trending_up</span> +12.5%
+                        </span>
+</div>
+<div class="mt-md">
+<p class="text-text-muted font-label-md">Total Calls</p>
+<h3 class="text-headline-lg text-primary mt-1">12,842</h3>
+</div>
+</div>
+<!-- Active Agents -->
+<div class="bg-surface-white border border-subtle p-lg rounded-xl flex flex-col justify-between hover:border-secondary/30 transition-colors cursor-default">
+<div class="flex justify-between items-start">
+<div class="p-2 bg-secondary/5 rounded-lg">
+<span class="material-symbols-outlined text-secondary">smart_toy</span>
+</div>
+</div>
+<div class="mt-md">
+<p class="text-text-muted font-label-md">Active Agents</p>
+<h3 class="text-headline-lg text-primary mt-1">48</h3>
+</div>
+</div>
+<!-- Avg Duration -->
+<div class="bg-surface-white border border-subtle p-lg rounded-xl flex flex-col justify-between hover:border-secondary/30 transition-colors cursor-default">
+<div class="flex justify-between items-start">
+<div class="p-2 bg-on-tertiary-fixed/5 rounded-lg">
+<span class="material-symbols-outlined text-on-tertiary-fixed">timer</span>
+</div>
+</div>
+<div class="mt-md">
+<p class="text-text-muted font-label-md">Avg Duration</p>
+<h3 class="text-headline-lg text-primary mt-1">4m 32s</h3>
+</div>
+</div>
+<!-- Satisfaction Score -->
+<div class="bg-surface-white border border-subtle p-lg rounded-xl flex flex-col justify-between hover:border-secondary/30 transition-colors cursor-default">
+<div class="flex justify-between items-start">
+<div class="p-2 bg-success-emerald/5 rounded-lg">
+<span class="material-symbols-outlined text-success-emerald">sentiment_very_satisfied</span>
+</div>
+<span class="text-success-emerald text-label-sm flex items-center gap-1 font-bold">
+<span class="material-symbols-outlined text-sm">trending_up</span> +0.4
+                        </span>
+</div>
+<div class="mt-md">
+<p class="text-text-muted font-label-md">Satisfaction Score</p>
+<h3 class="text-headline-lg text-primary mt-1">4.8<span class="text-body-md text-text-muted font-normal">/5</span></h3>
+</div>
+</div>
+</section>
+<!-- Table Section -->
+<section class="bg-surface-white border border-subtle rounded-xl overflow-hidden">
+<div class="px-lg py-md border-b border-subtle flex items-center justify-between bg-surface-container-low/50">
+<h3 class="font-headline-md text-[18px] text-primary">Recent Calls</h3>
+<button class="text-secondary font-label-md hover:underline flex items-center gap-1">
+                        View All <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="bg-surface-container-low text-text-muted font-label-sm uppercase tracking-wider">
+<tr>
+<th class="px-lg py-sm">Customer Name</th>
+<th class="px-lg py-sm">Status</th>
+<th class="px-lg py-sm">Duration</th>
+<th class="px-lg py-sm">Date</th>
+<th class="px-lg py-sm text-right">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-subtle font-body-sm">
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-lg py-md flex items-center gap-sm">
+<div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs">RK</div>
+<span class="font-label-md">Rahul Kapoor</span>
+</td>
+<td class="px-lg py-md">
+<span class="px-2 py-1 bg-emerald-100 text-success-emerald rounded-full text-[12px] font-bold">Completed</span>
+</td>
+<td class="px-lg py-md">3m 12s</td>
+<td class="px-lg py-md text-text-muted">Oct 24, 2024 · 14:20</td>
+<td class="px-lg py-md text-right">
+<button class="px-md py-1.5 border border-secondary text-secondary rounded-lg font-label-sm hover:bg-secondary hover:text-white transition-all">View</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-lg py-md flex items-center gap-sm">
+<div class="w-8 h-8 rounded-full bg-secondary/10 flex items-center justify-center text-secondary font-bold text-xs">AI</div>
+<span class="font-label-md">Anita Iyer</span>
+</td>
+<td class="px-lg py-md">
+<span class="px-2 py-1 bg-secondary-container/20 text-secondary rounded-full text-[12px] font-bold">Active</span>
+</td>
+<td class="px-lg py-md">1m 45s</td>
+<td class="px-lg py-md text-text-muted">Oct 24, 2024 · 14:15</td>
+<td class="px-lg py-md text-right">
+<button class="px-md py-1.5 border border-secondary text-secondary rounded-lg font-label-sm hover:bg-secondary hover:text-white transition-all">View</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-lg py-md flex items-center gap-sm">
+<div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs">VS</div>
+<span class="font-label-md">Vikram Singh</span>
+</td>
+<td class="px-lg py-md">
+<span class="px-2 py-1 bg-emerald-100 text-success-emerald rounded-full text-[12px] font-bold">Completed</span>
+</td>
+<td class="px-lg py-md">5m 50s</td>
+<td class="px-lg py-md text-text-muted">Oct 24, 2024 · 13:58</td>
+<td class="px-lg py-md text-right">
+<button class="px-md py-1.5 border border-secondary text-secondary rounded-lg font-label-sm hover:bg-secondary hover:text-white transition-all">View</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-lg py-md flex items-center gap-sm">
+<div class="w-8 h-8 rounded-full bg-error/10 flex items-center justify-center text-error font-bold text-xs">PM</div>
+<span class="font-label-md">Priya Menon</span>
+</td>
+<td class="px-lg py-md">
+<span class="px-2 py-1 bg-error-container/40 text-error rounded-full text-[12px] font-bold">Dropped</span>
+</td>
+<td class="px-lg py-md">0m 42s</td>
+<td class="px-lg py-md text-text-muted">Oct 24, 2024 · 13:42</td>
+<td class="px-lg py-md text-right">
+<button class="px-md py-1.5 border border-secondary text-secondary rounded-lg font-label-sm hover:bg-secondary hover:text-white transition-all">View</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- Bottom Banner / Info Section -->
+<section class="grid grid-cols-1 md:grid-cols-2 gap-lg pb-xl">
+<div class="bg-primary p-xl rounded-2xl text-white relative overflow-hidden group">
+<div class="relative z-10">
+<h4 class="font-headline-md text-headline-md mb-2">Automate Support Volume</h4>
+<p class="font-body-md opacity-80 mb-lg">Deploy our new Multi-Language agents to handle regional dialects across India effortlessly.</p>
+<button class="px-lg py-2.5 bg-white text-primary rounded-lg font-label-md hover:bg-opacity-90 transition-all">Learn More</button>
+</div>
+<!-- Subtle AI wave pattern -->
+<div class="absolute bottom-0 right-0 w-64 h-32 opacity-10 group-hover:scale-110 transition-transform duration-700 pointer-events-none">
+<svg class="w-full h-full" viewbox="0 0 200 100">
+<path d="M0,50 Q25,0 50,50 T100,50 T150,50 T200,50" fill="none" stroke="currentColor" stroke-width="2"></path>
+<path d="M0,60 Q25,10 50,60 T100,60 T150,60 T200,60" fill="none" stroke="currentColor" stroke-width="1"></path>
+</svg>
+</div>
+</div>
+<div class="bg-surface-container-low border border-subtle p-xl rounded-2xl flex items-center gap-lg">
+<div class="w-24 h-24 bg-white rounded-xl shadow-sm border border-subtle flex items-center justify-center p-md">
+<div class="w-full h-full rounded bg-secondary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary text-4xl">rocket_launch</span>
+</div>
+</div>
+<div>
+<h4 class="font-headline-md text-headline-md text-primary mb-1">Quick Start Guide</h4>
+<p class="font-body-sm text-text-muted mb-md">New to Vani AI? Learn how to configure your first voice flow in under 10 minutes.</p>
+<a class="text-secondary font-label-md flex items-center gap-1 group" href="#">
+                            Launch Tutorial <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_right_alt</span>
+</a>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer (Execution from JSON) -->
+<footer class="w-full py-xl px-lg flex flex-col md:flex-row justify-between items-center gap-md bg-surface-white border-t border-subtle mt-xl">
+<div>
+<p class="font-headline-lg text-[24px] font-bold text-primary mb-2">Vani AI</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">© 2024 Vani AI. All rights reserved. Built for Indian Enterprises.</p>
+</div>
+<div class="flex gap-lg">
+<a class="font-body-sm text-body-sm text-text-muted hover:text-secondary transition-colors" href="#">Privacy Policy</a>
+<a class="font-body-sm text-body-sm text-text-muted hover:text-secondary transition-colors" href="#">Terms of Service</a>
+<a class="font-body-sm text-body-sm text-text-muted hover:text-secondary transition-colors" href="#">Contact Support</a>
+<a class="font-body-sm text-body-sm text-text-muted hover:text-secondary transition-colors" href="#">Careers</a>
+</div>
+</footer>
+</main>
+<!-- Micro-interaction script -->
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const statCards = document.querySelectorAll('.stats-grid > div');
+            statCards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    card.style.transform = 'translateY(-2px)';
+                    card.style.transition = 'transform 0.2s ease-out, border-color 0.2s ease-out';
+                });
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'translateY(0)';
+                });
+            });
+        });
+    </script>

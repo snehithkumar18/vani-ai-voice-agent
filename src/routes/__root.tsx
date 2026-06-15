@@ -72,25 +72,29 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   );
 }
 
+import { VANI_TW_CONFIG, VANI_GLOBAL_CSS } from "../lib/vani-head";
+
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "Vani AI — Enterprise Voice Intelligence" },
+      { name: "description", content: "AI voice calling agents for Indian businesses. Realistic Hindi voice, 50+ calls/day, all Indian languages." },
+      { property: "og:title", content: "Vani AI — Enterprise Voice Intelligence" },
+      { property: "og:description", content: "AI voice calling agents for Indian businesses." },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
-      {
-        rel: "stylesheet",
-        href: appCss,
-      },
+      { rel: "stylesheet", href: appCss },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" },
+      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" },
+    ],
+    scripts: [
+      { src: "https://cdn.tailwindcss.com?plugins=forms,container-queries" },
+      { children: VANI_TW_CONFIG },
     ],
   }),
   shellComponent: RootShell,
@@ -101,9 +105,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className="scroll-smooth">
       <head>
         <HeadContent />
+        <style dangerouslySetInnerHTML={{ __html: VANI_GLOBAL_CSS }} />
       </head>
       <body>
         {children}
