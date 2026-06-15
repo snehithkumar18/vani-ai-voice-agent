@@ -1,15 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { DashboardLayout } from "../components/layout/DashboardLayout";
 
-export const Route = createFileRoute("/create-agent")({
-  component: CreateAgentPage,
+export const Route = createFileRoute("/agent/$id")({
+  component: AgentDetailPage,
 });
 
-function CreateAgentPage() {
+function AgentDetailPage() {
+  const { id } = Route.useParams();
   return (
     <DashboardLayout>
       <div className="flex items-center justify-center h-full">
-        <h1 className="text-2xl text-primary">Create Agent</h1>
+        <h1 className="text-2xl text-primary">Agent Detail — {id}</h1>
       </div>
     </DashboardLayout>
   );

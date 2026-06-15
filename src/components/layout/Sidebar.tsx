@@ -1,6 +1,6 @@
 import { Link, useLocation, useNavigate } from "@tanstack/react-router";
-import { Icon } from "../ui/Icon";
-import { Button } from "../ui/Button";
+import { Icon } from "../vani-ui/Icon";
+import { Button } from "../vani-ui/Button";
 
 const NAV = [
   { label: "Overview", icon: "dashboard", route: "/dashboard" },

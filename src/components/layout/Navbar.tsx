@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "framer-motion";
-import { Icon } from "../ui/Icon";
-import { Button } from "../ui/Button";
+import { Icon } from "../vani-ui/Icon";
+import { Button } from "../vani-ui/Button";
 
 const NAV_LINKS = [
   { label: "Product", to: "/" },

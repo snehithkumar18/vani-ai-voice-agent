@@ -1,5 +1,5 @@
 import { Link, useLocation } from "@tanstack/react-router";
-import { Icon } from "../ui/Icon";
+import { Icon } from "../vani-ui/Icon";
 
 const ITEMS = [
   { label: "Overview", icon: "dashboard", route: "/dashboard" },

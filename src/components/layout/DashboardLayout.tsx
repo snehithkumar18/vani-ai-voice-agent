@@ -1,8 +1,8 @@
 import type { ReactNode } from "react";
 import { Sidebar } from "./Sidebar";
 import { BottomNav } from "./BottomNav";
-import { Icon } from "../ui/Icon";
-import { Avatar } from "../ui/Avatar";
+import { Icon } from "../vani-ui/Icon";
+import { Avatar } from "../vani-ui/Avatar";
 
 interface Props {
   children: ReactNode;

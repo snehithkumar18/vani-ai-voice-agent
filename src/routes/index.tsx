@@ -1,7 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { HtmlPage } from "@/components/HtmlPage";
-import html from "@/page-html/vani_ai_landing_page.body.html?raw";
+import { Navbar } from "../components/layout/Navbar";
 
 export const Route = createFileRoute("/")({
-  component: () => <HtmlPage html={html} className="bg-background text-on-background" />,
+  component: LandingPage,
 });
+
+function LandingPage() {
+  return (
+    <div className="min-h-screen bg-background">
+      <Navbar />
+      <main className="pt-32 flex items-center justify-center">
+        <h1 className="text-2xl text-primary">Landing</h1>
+      </main>
+    </div>
+  );
+}
