@@ -17,19 +17,33 @@ import { Toaster } from "@/components/ui/sonner";
 
 function NotFoundComponent() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="max-w-md text-center">
-        <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          The page you're looking for doesn't exist or has been moved.
+    <div className="relative flex min-h-screen items-center justify-center px-4 hero-gradient overflow-hidden">
+      <span
+        aria-hidden
+        className="absolute inset-0 flex items-center justify-center text-[120px] md:text-[200px] font-bold text-white/10 pointer-events-none select-none"
+      >
+        404
+      </span>
+      <div className="relative max-w-md text-center">
+        <span className="material-symbols-outlined text-[64px] text-secondary-fixed-dim">
+          search_off
+        </span>
+        <h1 className="text-3xl font-bold text-white mt-4">Page not found</h1>
+        <p className="mt-2 text-on-primary-container">
+          This page doesn't exist or has been moved.
         </p>
-        <div className="mt-6">
+        <div className="mt-6 flex flex-wrap justify-center gap-3">
+          <Link
+            to="/dashboard"
+            className="inline-flex items-center justify-center rounded-lg bg-secondary px-5 py-2.5 text-sm font-medium text-white shadow-sm hover:opacity-90"
+          >
+            Back to Dashboard
+          </Link>
           <Link
             to="/"
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            className="inline-flex items-center justify-center rounded-lg border border-white/30 bg-white/5 px-5 py-2.5 text-sm font-medium text-white hover:bg-white/10"
           >
-            Go home
+            Go Home
           </Link>
         </div>
       </div>
@@ -85,9 +99,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
       { title: "Vani AI — Enterprise Voice Intelligence" },
       { name: "description", content: "AI voice calling agents for Indian businesses. Realistic Hindi voice, 50+ calls/day, all Indian languages." },
-      { property: "og:title", content: "Vani AI — Enterprise Voice Intelligence" },
-      { property: "og:description", content: "AI voice calling agents for Indian businesses." },
+      { property: "og:title", content: "Vani AI — Give Your Business a Voice" },
+      { property: "og:description", content: "AI voice calling agents for Indian businesses. Hindi, Telugu, and 20+ languages." },
       { property: "og:type", content: "website" },
+      { property: "og:site_name", content: "Vani AI" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Vani AI — Give Your Business a Voice" },
+      { name: "twitter:description", content: "AI voice calling agents for Indian businesses. Hindi, Telugu, and 20+ languages." },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
