@@ -11,10 +11,10 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as LoginRouteImport } from './routes/login'
-import { Route as DashboardRouteImport } from './routes/dashboard'
-import { Route as CreateAgentRouteImport } from './routes/create-agent'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AgentIdRouteImport } from './routes/agent.$id'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedCreateAgentRouteImport } from './routes/_authenticated/create-agent'
+import { Route as AuthenticatedAgentIdRouteImport } from './routes/_authenticated/agent.$id'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
@@ -26,80 +26,81 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DashboardRoute = DashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CreateAgentRoute = CreateAgentRouteImport.update({
-  id: '/create-agent',
-  path: '/create-agent',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AgentIdRoute = AgentIdRouteImport.update({
-  id: '/agent/$id',
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
+  id: '/_authenticated/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedCreateAgentRoute =
+  AuthenticatedCreateAgentRouteImport.update({
+    id: '/_authenticated/create-agent',
+    path: '/create-agent',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const AuthenticatedAgentIdRoute = AuthenticatedAgentIdRouteImport.update({
+  id: '/_authenticated/agent/$id',
   path: '/agent/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/create-agent': typeof CreateAgentRoute
-  '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
-  '/agent/$id': typeof AgentIdRoute
+  '/create-agent': typeof AuthenticatedCreateAgentRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/agent/$id': typeof AuthenticatedAgentIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/create-agent': typeof CreateAgentRoute
-  '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
-  '/agent/$id': typeof AgentIdRoute
+  '/create-agent': typeof AuthenticatedCreateAgentRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/agent/$id': typeof AuthenticatedAgentIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/create-agent': typeof CreateAgentRoute
-  '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
-  '/agent/$id': typeof AgentIdRoute
+  '/_authenticated/create-agent': typeof AuthenticatedCreateAgentRoute
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/agent/$id': typeof AuthenticatedAgentIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/create-agent'
-    | '/dashboard'
     | '/login'
     | '/signup'
+    | '/create-agent'
+    | '/dashboard'
     | '/agent/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/create-agent' | '/dashboard' | '/login' | '/signup' | '/agent/$id'
+  to: '/' | '/login' | '/signup' | '/create-agent' | '/dashboard' | '/agent/$id'
   id:
     | '__root__'
     | '/'
-    | '/create-agent'
-    | '/dashboard'
     | '/login'
     | '/signup'
-    | '/agent/$id'
+    | '/_authenticated/create-agent'
+    | '/_authenticated/dashboard'
+    | '/_authenticated/agent/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  CreateAgentRoute: typeof CreateAgentRoute
-  DashboardRoute: typeof DashboardRoute
   LoginRoute: typeof LoginRoute
   SignupRoute: typeof SignupRoute
-  AgentIdRoute: typeof AgentIdRoute
+  AuthenticatedCreateAgentRoute: typeof AuthenticatedCreateAgentRoute
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedAgentIdRoute: typeof AuthenticatedAgentIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -118,20 +119,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/dashboard': {
-      id: '/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof DashboardRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/create-agent': {
-      id: '/create-agent'
-      path: '/create-agent'
-      fullPath: '/create-agent'
-      preLoaderRoute: typeof CreateAgentRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -139,11 +126,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/agent/$id': {
-      id: '/agent/$id'
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/create-agent': {
+      id: '/_authenticated/create-agent'
+      path: '/create-agent'
+      fullPath: '/create-agent'
+      preLoaderRoute: typeof AuthenticatedCreateAgentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/agent/$id': {
+      id: '/_authenticated/agent/$id'
       path: '/agent/$id'
       fullPath: '/agent/$id'
-      preLoaderRoute: typeof AgentIdRouteImport
+      preLoaderRoute: typeof AuthenticatedAgentIdRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -151,12 +152,22 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  CreateAgentRoute: CreateAgentRoute,
-  DashboardRoute: DashboardRoute,
   LoginRoute: LoginRoute,
   SignupRoute: SignupRoute,
-  AgentIdRoute: AgentIdRoute,
+  AuthenticatedCreateAgentRoute: AuthenticatedCreateAgentRoute,
+  AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedAgentIdRoute: AuthenticatedAgentIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
