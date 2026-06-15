@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { DashboardLayout } from "../components/layout/DashboardLayout";
+import { DashboardLayout } from "@/components/layout/DashboardLayout";
 
-export const Route = createFileRoute("/agent/$id")({
+export const Route = createFileRoute("/_authenticated/agent/$id")({
   component: AgentDetailPage,
 });
 
