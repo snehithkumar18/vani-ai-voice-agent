@@ -449,7 +449,7 @@ function CallRow({ call }: { call: Call }) {
         </span>
       </td>
       <td className="px-6 py-4">
-        <Badge variant={call.status === "completed" ? "success" : "neutral"}>
+        <Badge variant={call.status === "completed" ? "active" : "neutral"}>
           {call.status}
         </Badge>
       </td>
