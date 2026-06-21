@@ -2,7 +2,7 @@ import os
 import json
 import time
 import logging
-from fastapi import FastAPI, HTTPException, Response, Form
+from fastapi import APIRouter, FastAPI, HTTPException, Response, Form
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from livekit import api
@@ -12,26 +12,14 @@ from db.supabase_client import get_supabase
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("vani-ai.dispatch")
 
-app = FastAPI(
-    title="Vani AI Dispatch Service",
-    description="FastAPI service for call dispatching and Plivo webhooks.",
-    version="1.0.0"
-)
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+router = APIRouter()
 
 class OutboundCallRequest(BaseModel):
     agent_id: str
     phone_number: str
     user_id: str
 
-@app.post("/api/calls/outbound")
+@router.post("/calls/outbound")
 async def outbound_call(req: OutboundCallRequest):
     url = os.getenv("LIVEKIT_URL")
     api_key = os.getenv("LIVEKIT_API_KEY")
@@ -75,7 +63,7 @@ async def outbound_call(req: OutboundCallRequest):
     finally:
         await lk_api.aclose()
 
-@app.post("/api/calls/inbound-webhook")
+@router.post("/calls/inbound-webhook")
 async def inbound_webhook(
     From: str = Form(...),
     To: str = Form(...)
@@ -166,12 +154,25 @@ async def inbound_webhook(
     finally:
         await lk_api.aclose()
 
-@app.get("/health")
+@router.get("/health")
 def health_check():
     return { "status": "ok", "service": "vani-ai-dispatch" }
 
 if __name__ == "__main__":
     import uvicorn
+    app = FastAPI(
+        title="Vani AI Dispatch Service",
+        description="FastAPI service for call dispatching and Plivo webhooks.",
+        version="1.0.0"
+    )
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+    app.include_router(router, prefix="/api")
     port = int(os.getenv("API_PORT", "8000"))
     logger.info(f"Starting Vani AI Dispatch service on port {port}...")
-    uvicorn.run("api.dispatch:app", host="0.0.0.0", port=port, reload=False)
+    uvicorn.run(app, host="0.0.0.0", port=port)

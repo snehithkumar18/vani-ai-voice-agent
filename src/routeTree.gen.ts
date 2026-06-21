@@ -13,8 +13,12 @@ import { Route as SignupRouteImport } from './routes/signup'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedCreateAgentRouteImport } from './routes/_authenticated/create-agent'
+import { Route as AuthenticatedCallLogsRouteImport } from './routes/_authenticated/call-logs'
+import { Route as AuthenticatedAnalyticsRouteImport } from './routes/_authenticated/analytics'
+import { Route as AuthenticatedAgentsRouteImport } from './routes/_authenticated/agents'
 import { Route as AuthenticatedAgentIdRouteImport } from './routes/_authenticated/agent.$id'
 
 const SignupRoute = SignupRouteImport.update({
@@ -36,6 +40,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -47,6 +56,21 @@ const AuthenticatedCreateAgentRoute =
     path: '/create-agent',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedCallLogsRoute = AuthenticatedCallLogsRouteImport.update({
+  id: '/call-logs',
+  path: '/call-logs',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedAnalyticsRoute = AuthenticatedAnalyticsRouteImport.update({
+  id: '/analytics',
+  path: '/analytics',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedAgentsRoute = AuthenticatedAgentsRouteImport.update({
+  id: '/agents',
+  path: '/agents',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedAgentIdRoute = AuthenticatedAgentIdRouteImport.update({
   id: '/agent/$id',
   path: '/agent/$id',
@@ -57,16 +81,24 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
+  '/agents': typeof AuthenticatedAgentsRoute
+  '/analytics': typeof AuthenticatedAnalyticsRoute
+  '/call-logs': typeof AuthenticatedCallLogsRoute
   '/create-agent': typeof AuthenticatedCreateAgentRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/settings': typeof AuthenticatedSettingsRoute
   '/agent/$id': typeof AuthenticatedAgentIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
+  '/agents': typeof AuthenticatedAgentsRoute
+  '/analytics': typeof AuthenticatedAnalyticsRoute
+  '/call-logs': typeof AuthenticatedCallLogsRoute
   '/create-agent': typeof AuthenticatedCreateAgentRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/settings': typeof AuthenticatedSettingsRoute
   '/agent/$id': typeof AuthenticatedAgentIdRoute
 }
 export interface FileRoutesById {
@@ -75,8 +107,12 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
+  '/_authenticated/agents': typeof AuthenticatedAgentsRoute
+  '/_authenticated/analytics': typeof AuthenticatedAnalyticsRoute
+  '/_authenticated/call-logs': typeof AuthenticatedCallLogsRoute
   '/_authenticated/create-agent': typeof AuthenticatedCreateAgentRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/_authenticated/agent/$id': typeof AuthenticatedAgentIdRoute
 }
 export interface FileRouteTypes {
@@ -85,19 +121,37 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/signup'
+    | '/agents'
+    | '/analytics'
+    | '/call-logs'
     | '/create-agent'
     | '/dashboard'
+    | '/settings'
     | '/agent/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/signup' | '/create-agent' | '/dashboard' | '/agent/$id'
+  to:
+    | '/'
+    | '/login'
+    | '/signup'
+    | '/agents'
+    | '/analytics'
+    | '/call-logs'
+    | '/create-agent'
+    | '/dashboard'
+    | '/settings'
+    | '/agent/$id'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/login'
     | '/signup'
+    | '/_authenticated/agents'
+    | '/_authenticated/analytics'
+    | '/_authenticated/call-logs'
     | '/_authenticated/create-agent'
     | '/_authenticated/dashboard'
+    | '/_authenticated/settings'
     | '/_authenticated/agent/$id'
   fileRoutesById: FileRoutesById
 }
@@ -138,6 +192,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/settings': {
+      id: '/_authenticated/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AuthenticatedSettingsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
@@ -152,6 +213,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedCreateAgentRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/call-logs': {
+      id: '/_authenticated/call-logs'
+      path: '/call-logs'
+      fullPath: '/call-logs'
+      preLoaderRoute: typeof AuthenticatedCallLogsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/analytics': {
+      id: '/_authenticated/analytics'
+      path: '/analytics'
+      fullPath: '/analytics'
+      preLoaderRoute: typeof AuthenticatedAnalyticsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/agents': {
+      id: '/_authenticated/agents'
+      path: '/agents'
+      fullPath: '/agents'
+      preLoaderRoute: typeof AuthenticatedAgentsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/agent/$id': {
       id: '/_authenticated/agent/$id'
       path: '/agent/$id'
@@ -163,14 +245,22 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAgentsRoute: typeof AuthenticatedAgentsRoute
+  AuthenticatedAnalyticsRoute: typeof AuthenticatedAnalyticsRoute
+  AuthenticatedCallLogsRoute: typeof AuthenticatedCallLogsRoute
   AuthenticatedCreateAgentRoute: typeof AuthenticatedCreateAgentRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
   AuthenticatedAgentIdRoute: typeof AuthenticatedAgentIdRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAgentsRoute: AuthenticatedAgentsRoute,
+  AuthenticatedAnalyticsRoute: AuthenticatedAnalyticsRoute,
+  AuthenticatedCallLogsRoute: AuthenticatedCallLogsRoute,
   AuthenticatedCreateAgentRoute: AuthenticatedCreateAgentRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
   AuthenticatedAgentIdRoute: AuthenticatedAgentIdRoute,
 }
 

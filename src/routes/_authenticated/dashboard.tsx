@@ -119,9 +119,12 @@ function DashboardPage() {
       <div className="bg-white border border-border-subtle rounded-xl overflow-hidden mb-8">
         <div className="px-6 py-4 border-b border-border-subtle flex justify-between items-center">
           <h2 className="text-primary font-semibold text-lg">Recent Calls</h2>
-          <button className="text-secondary text-sm font-medium hover:underline">
+          <Link
+            to="/call-logs"
+            className="text-secondary text-sm font-medium hover:underline"
+          >
             View All →
-          </button>
+          </Link>
         </div>
 
         {calls.isLoading ? (

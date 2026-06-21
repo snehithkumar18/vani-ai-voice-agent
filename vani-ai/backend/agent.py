@@ -55,7 +55,7 @@ def build_llm():
 
 
 def build_stt(agent_cfg: AgentConfig):
-    """Configure STT using Deepgram Nova-2 with mapped language code."""
+    """Configure STT using Deepgram Nova-2 or Nova-3 with mapped language code."""
     lang_map = {
         "hi-IN": "hi",
         "te-IN": "te",
@@ -63,8 +63,9 @@ def build_stt(agent_cfg: AgentConfig):
         "en-IN": "en",
     }
     stt_lang_code = lang_map.get(agent_cfg.language_code, "en")
-    logger.info(f"Using Deepgram Nova-2 STT (Language: {stt_lang_code})")
-    return deepgram.STT(model="nova-2", language=stt_lang_code)
+    model = "nova-3" if stt_lang_code == "te" else "nova-2"
+    logger.info(f"Using Deepgram {model} STT (Language: {stt_lang_code})")
+    return deepgram.STT(model=model, language=stt_lang_code)
 
 
 class VaniTransferTools(llm.ToolContext):
@@ -195,6 +196,17 @@ async def entrypoint(ctx: agents.JobContext):
             logger.warning(f"Failed to parse room metadata JSON: {e}")
 
     if not agent_id:
+        try:
+            from db.supabase_client import get_supabase
+            sb = get_supabase()
+            agents_resp = sb.table("agents").select("id").limit(1).execute()
+            if agents_resp.data:
+                agent_id = agents_resp.data[0]["id"]
+                logger.info(f"No agent_id in metadata. Fell back to first database agent ID: {agent_id}")
+        except Exception as e:
+            logger.warning(f"Failed to fetch fallback agent ID from DB: {e}")
+
+    if not agent_id:
         logger.error("No agent_id found in metadata. Shutting down context.")
         ctx.shutdown()
         return
@@ -282,7 +294,7 @@ async def entrypoint(ctx: agents.JobContext):
         except Exception as e:
             logger.error(f"Failed to place outbound call: {e}")
             try:
-                await call_logger.end_call(status="failed")
+                await call_logger.end_call(status="dropped")
             except Exception as log_err:
                 logger.error(f"Failed to log call failure: {log_err}")
             ctx.shutdown()
@@ -293,7 +305,10 @@ async def entrypoint(ctx: agents.JobContext):
 
     # Step 9: Wait for disconnect and finalize logging in finally block
     try:
-        await ctx.wait_for_disconnect()
+        import asyncio
+        from livekit import rtc
+        while ctx.room.connection_state != rtc.ConnectionState.CONN_DISCONNECTED:
+            await asyncio.sleep(1)
     finally:
         logger.info("Agent context shutting down. Saving logs.")
         try:
