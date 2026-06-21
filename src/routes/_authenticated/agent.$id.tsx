@@ -53,6 +53,60 @@ function AgentDetailPage() {
   const [hoverBar, setHoverBar] = useState<number | null>(null);
   const PAGE_SIZE = 10;
 
+  const realSuccessRate = useMemo(() => {
+    if (!calls || calls.length === 0) return 0;
+    const completed = calls.filter((c) => c.status === "completed").length;
+    return Math.round((completed / calls.length) * 100);
+  }, [calls]);
+
+  const realAvgDuration = useMemo(() => {
+    if (!calls || calls.length === 0) return 0;
+    const sum = calls.reduce((acc, c) => acc + (c.duration_seconds || 0), 0);
+    return Math.round(sum / calls.length);
+  }, [calls]);
+
+  const chartData = useMemo(() => {
+    const now = new Date();
+    const list = calls || [];
+    
+    if (period === "24h") {
+      const hourlyCounts = new Array(24).fill(0);
+      list.forEach((c) => {
+        const diffMs = now.getTime() - new Date(c.started_at).getTime();
+        const diffHours = Math.floor(diffMs / (3600 * 1000));
+        if (diffHours >= 0 && diffHours < 24) {
+          hourlyCounts[23 - diffHours]++;
+        }
+      });
+      return hourlyCounts;
+    } else if (period === "7d") {
+      const dailyCounts = new Array(7).fill(0);
+      list.forEach((c) => {
+        const diffMs = now.getTime() - new Date(c.started_at).getTime();
+        const diffDays = Math.floor(diffMs / (24 * 3600 * 1000));
+        if (diffDays >= 0 && diffDays < 7) {
+          dailyCounts[6 - diffDays]++;
+        }
+      });
+      return dailyCounts;
+    } else {
+      const dailyCounts = new Array(30).fill(0);
+      list.forEach((c) => {
+        const diffMs = now.getTime() - new Date(c.started_at).getTime();
+        const diffDays = Math.floor(diffMs / (24 * 3600 * 1000));
+        if (diffDays >= 0 && diffDays < 30) {
+          dailyCounts[29 - diffDays]++;
+        }
+      });
+      return dailyCounts;
+    }
+  }, [calls, period]);
+
+  const chartMax = useMemo(() => {
+    const m = Math.max(...chartData);
+    return m === 0 ? 1 : m;
+  }, [chartData]);
+
   const [isCalling, setIsCalling] = useState(false);
 
   const handleCall = async () => {
@@ -111,8 +165,8 @@ function AgentDetailPage() {
     updateAgent.mutate({ id: agent.id, patch: { status: next } });
   };
 
-  const data = TREND_DATA[period];
-  const max = Math.max(...data);
+  const data = chartData;
+  const max = chartMax;
 
   return (
     <DashboardLayout>
@@ -247,22 +301,22 @@ function AgentDetailPage() {
                 icon="call"
                 iconColor="text-secondary"
                 label="Calls Handled"
-                value={agent.calls_handled.toLocaleString()}
-                delta="+12% this week"
+                value={calls.length.toLocaleString()}
+                delta="total logs"
               />
               <MiniStat
                 icon="check_circle"
                 iconColor="text-emerald-500"
                 label="Success Rate"
-                value={`${agent.success_rate}%`}
-                delta="+2% this week"
+                value={`${realSuccessRate}%`}
+                delta="completed calls"
               />
               <MiniStat
                 icon="timer"
                 iconColor="text-amber-500"
                 label="Avg Resolution"
-                value={formatDuration(agent.avg_duration_seconds)}
-                delta="-0.5s"
+                value={formatDuration(realAvgDuration)}
+                delta="average duration"
               />
             </div>
 

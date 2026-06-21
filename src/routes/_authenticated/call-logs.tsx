@@ -45,6 +45,7 @@ function CallLogsPage() {
 
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
+  const [selectedCall, setSelectedCall] = useState<Call | null>(null);
   const PAGE_SIZE = 12;
 
   const agentsById = useMemo(() => {
@@ -155,6 +156,7 @@ function CallLogsPage() {
                     <CallLogRow
                       key={call.id}
                       call={call}
+                      onViewDetails={setSelectedCall}
                       agentName={
                         call.agent_id
                           ? agentsById.get(call.agent_id)?.name ?? "Unknown Agent"
@@ -196,11 +198,32 @@ function CallLogsPage() {
           </>
         )}
       </div>
+
+      {/* Call Detail Modal */}
+      {selectedCall && (
+        <CallDetailModal
+          call={selectedCall}
+          onClose={() => setSelectedCall(null)}
+          agentName={
+            selectedCall.agent_id
+              ? agentsById.get(selectedCall.agent_id)?.name ?? "Unknown Agent"
+              : "Unknown Agent"
+          }
+        />
+      )}
     </DashboardLayout>
   );
 }
 
-function CallLogRow({ call, agentName }: { call: Call; agentName: string }) {
+function CallLogRow({
+  call,
+  agentName,
+  onViewDetails,
+}: {
+  call: Call;
+  agentName: string;
+  onViewDetails: (call: Call) => void;
+}) {
   const statusBadge = (() => {
     switch (call.status) {
       case "active":
@@ -286,18 +309,154 @@ function CallLogRow({ call, agentName }: { call: Call; agentName: string }) {
         {formatDate(call.started_at)}
       </td>
       <td className="px-6 py-4 text-right">
-        {call.agent_id ? (
-          <Link
-            to="/agent/$id"
-            params={{ id: call.agent_id }}
-            className="inline-flex items-center px-3 py-1.5 text-xs font-medium rounded-md border border-secondary text-secondary hover:bg-secondary hover:text-white transition-colors"
-          >
-            View Details
-          </Link>
-        ) : (
-          <span className="text-xs text-outline">—</span>
-        )}
+        <button
+          onClick={() => onViewDetails(call)}
+          className="inline-flex items-center px-3 py-1.5 text-xs font-medium rounded-md border border-secondary text-secondary hover:bg-secondary hover:text-white transition-colors cursor-pointer"
+        >
+          View Details
+        </button>
       </td>
     </tr>
+  );
+}
+
+function CallDetailModal({
+  call,
+  onClose,
+  agentName,
+}: {
+  call: Call;
+  onClose: () => void;
+  agentName: string;
+}) {
+  const parsedTranscript = useMemo(() => {
+    if (!call.transcript) return [];
+    
+    return call.transcript.split("\n").map((line, idx) => {
+      const match = line.match(/^\[(.*?)\]\s+(USER|AGENT):\s*(.*)$/i) || line.match(/^(USER|AGENT):\s*(.*)$/i);
+      if (match) {
+        const hasTime = match.length === 4;
+        const time = hasTime ? match[1] : "";
+        const speaker = hasTime ? match[2] : match[1];
+        const text = hasTime ? match[3] : match[2];
+        return { id: idx, time, speaker: speaker.toUpperCase(), text };
+      }
+      return { id: idx, time: "", speaker: "UNKNOWN", text: line };
+    });
+  }, [call.transcript]);
+
+  return (
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+      <div className="bg-white rounded-2xl w-full max-w-2xl h-[80vh] flex flex-col shadow-2xl overflow-hidden border border-border-subtle animate-in fade-in duration-200">
+        {/* Modal Header */}
+        <div className="px-6 py-4 bg-surface-container-low border-b border-border-subtle flex justify-between items-center shrink-0">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-secondary to-primary flex items-center justify-center text-sm font-bold text-white shrink-0">
+              {initials(call.caller_name ?? call.caller_number)}
+            </div>
+            <div>
+              <h3 className="font-bold text-primary text-base">
+                {call.caller_name ?? "Customer"}
+              </h3>
+              <p className="text-xs text-on-surface-variant mt-0.5">
+                {call.caller_number ?? "Unknown Number"} • {agentName}
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={onClose}
+            className="p-1.5 rounded-lg hover:bg-surface-container-high transition-colors cursor-pointer text-outline hover:text-primary"
+            aria-label="Close modal"
+          >
+            <Icon name="close" className="text-[22px]" />
+          </button>
+        </div>
+
+        {/* Modal Content */}
+        <div className="flex-1 overflow-y-auto p-6 space-y-6">
+          {/* Metadata Grid */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 bg-surface-container-low rounded-xl border border-border-subtle">
+            <div>
+              <span className="text-[10px] uppercase font-bold tracking-wider text-outline block">Date & Time</span>
+              <p className="text-sm font-semibold text-primary mt-1">{formatDate(call.started_at)}</p>
+            </div>
+            <div>
+              <span className="text-[10px] uppercase font-bold tracking-wider text-outline block">Duration</span>
+              <p className="text-sm font-semibold text-primary mt-1">{formatDuration(call.duration_seconds)}</p>
+            </div>
+            <div>
+              <span className="text-[10px] uppercase font-bold tracking-wider text-outline block">Intent</span>
+              <p className="text-sm font-semibold mt-1">
+                <span className="text-xs bg-surface-container-high rounded-full px-2.5 py-0.5 text-on-surface-variant font-medium">
+                  {call.intent ?? "general"}
+                </span>
+              </p>
+            </div>
+            <div>
+              <span className="text-[10px] uppercase font-bold tracking-wider text-outline block">Sentiment</span>
+              <p className="text-sm font-semibold text-primary mt-1 capitalize">{call.sentiment}</p>
+            </div>
+          </div>
+
+          {/* Call Recording */}
+          {call.recording_url ? (
+            <div className="p-4 bg-surface-container-low rounded-xl border border-border-subtle">
+              <span className="text-xs font-semibold text-primary mb-2 flex items-center gap-1.5">
+                <Icon name="play_circle" className="text-secondary" /> Call Recording
+              </span>
+              <audio src={call.recording_url} controls className="w-full mt-2 outline-none" />
+            </div>
+          ) : (
+            <div className="p-4 bg-surface-container-low rounded-xl border border-dashed border-border-subtle text-center text-outline text-xs">
+              <Icon name="mic_off" className="text-[20px] mb-1.5 text-outline/60" />
+              <p>No audio recording available for this call</p>
+            </div>
+          )}
+
+          {/* Transcript Dialogue */}
+          <div className="flex flex-col flex-1 min-h-0">
+            <h4 className="font-bold text-primary text-sm mb-3 flex items-center gap-1.5 shrink-0">
+              <Icon name="forum" className="text-secondary text-[18px]" /> Conversation Transcript
+            </h4>
+            
+            {parsedTranscript.length === 0 ? (
+              <div className="py-10 text-center text-outline text-sm">
+                No transcript text was recorded for this call.
+              </div>
+            ) : (
+              <div className="space-y-4 max-h-[300px] overflow-y-auto pr-2">
+                {parsedTranscript.map((t) => {
+                  if (t.speaker === "USER") {
+                    return (
+                      <div key={t.id} className="flex flex-col items-end">
+                        <div className="max-w-[75%] bg-surface-container-high text-primary rounded-2xl rounded-tr-none px-4 py-2 text-sm shadow-sm">
+                          {t.text}
+                        </div>
+                        {t.time && <span className="text-[10px] text-outline mt-1 mr-1">{t.time}</span>}
+                      </div>
+                    );
+                  } else if (t.speaker === "AGENT") {
+                    return (
+                      <div key={t.id} className="flex flex-col items-start">
+                        <div className="max-w-[75%] bg-secondary text-white rounded-2xl rounded-tl-none px-4 py-2 text-sm shadow-sm">
+                          {t.text}
+                        </div>
+                        {t.time && <span className="text-[10px] text-outline mt-1 ml-1">{t.time}</span>}
+                      </div>
+                    );
+                  } else {
+                    return (
+                      <div key={t.id} className="text-center py-1">
+                        <span className="text-xs text-outline italic">{t.text}</span>
+                      </div>
+                    );
+                  }
+                })}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }

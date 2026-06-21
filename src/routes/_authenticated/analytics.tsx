@@ -111,8 +111,8 @@ function AnalyticsPage() {
               <p className="text-3xl font-bold text-primary mt-4">
                 {(statsQuery.data?.total_calls ?? 0).toLocaleString()}
               </p>
-              <span className="text-xs text-success-emerald font-semibold mt-2 flex items-center gap-1">
-                <Icon name="trending_up" className="text-[14px]" /> +12.5% vs last period
+              <span className="text-xs text-outline mt-2 block">
+                Total call logs recorded
               </span>
             </div>
 
@@ -141,8 +141,8 @@ function AnalyticsPage() {
               <p className="text-3xl font-bold text-primary mt-4">
                 {formatDuration(statsQuery.data?.avg_duration_seconds ?? 0)}
               </p>
-              <span className="text-xs text-success-emerald font-semibold mt-2 flex items-center gap-1">
-                <Icon name="trending_down" className="text-[14px]" /> -4.2s optimization
+              <span className="text-xs text-outline mt-2 block">
+                Average call length
               </span>
             </div>
 
@@ -156,8 +156,8 @@ function AnalyticsPage() {
               <p className="text-3xl font-bold text-primary mt-4">
                 {statsQuery.data?.satisfaction_score ?? 0}/5
               </p>
-              <span className="text-xs text-success-emerald font-semibold mt-2 flex items-center gap-1">
-                <Icon name="trending_up" className="text-[14px]" /> +0.2 improvement
+              <span className="text-xs text-outline mt-2 block">
+                Out of 5 points
               </span>
             </div>
           </>

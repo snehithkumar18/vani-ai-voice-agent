@@ -85,7 +85,6 @@ function DashboardPage() {
               iconColor="text-secondary"
               label="Total Calls"
               value={(stats.data?.total_calls ?? 0).toLocaleString()}
-              trend={{ value: "+12.5%", positive: true }}
             />
             <StatCard
               icon="smart_toy"
@@ -109,7 +108,6 @@ function DashboardPage() {
               iconColor="text-success-emerald"
               label="Satisfaction Score"
               value={`${stats.data?.satisfaction_score ?? 0}/5`}
-              trend={{ value: "+0.4", positive: true }}
             />
           </>
         )}
